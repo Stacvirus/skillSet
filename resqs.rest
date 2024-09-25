@@ -1,0 +1,14 @@
+get http://localhost:3000/api/v1/skill-sync
+###
+# sign up a user"client"
+post http://localhost:3000/api/v1/skill-sync/auth/sign-up
+Content-Type: application/json
+
+{
+    "firstName": "Admin",
+    "lastName": "admin",
+    "phone": 654789040,
+    "password": "password",
+    "role": "ADMIN",
+    "email": "admin@gmail.com"
+}
