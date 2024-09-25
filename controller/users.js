@@ -33,11 +33,65 @@ router.post("/sign-up", async (req, res, next) => {
 });
 
 router.get("/users", async (req, res, next) => {
+  let { page = 1, limit = 10 } = req.query;
+  page = parseInt(page);
+  limit = parseInt(limit);
   try {
-    res.send(await User.find({}));
+    const items = await User.find()
+      .skip((page - 1) * limit)
+      .limit(limit);
+    const countUsers = await User.countDocuments();
+    const data = {
+      page,
+      limit,
+      totalItems: items.length,
+      totalPages: Math.ceil(countUsers / limit),
+      content: items,
+    };
+    res.send({
+      status: true,
+      data,
+    });
   } catch (error) {
     next(error);
   }
 });
+
+router.get("/users/:user_id", async (req, res, next) => {
+  const { user_id } = req.params;
+  try {
+    res.send(await User.findById(user_id));
+  } catch (error) {
+    next(error);
+  }
+});
+
+// update only non essential datas like first and last Names,
+router.put("/users/details/:user_id", async (req, res, next) => {
+  const { user_id } = req.params;
+  try {
+    res.send(await User.findByIdAndUpdate(user_id, req.body));
+  } catch (error) {
+    next(error);
+  }
+});
+
+// delete a user but its table still exist in the db
+
+// const userData = require("../data/users.json");
+
+// const insertArtisans = async () => {
+//   await User.deleteMany();
+//   try {
+//     const docs = await User.insertMany(userData);
+//     return Promise.resolve(docs);
+//   } catch (error) {
+//     return Promise.reject(error);
+//   }
+// };
+
+// insertArtisans()
+//   .then((docs) => console.log(docs))
+//   .catch((err) => console.log(err));
 
 module.exports = router;

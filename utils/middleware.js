@@ -5,7 +5,10 @@ const jwt = require("jsonwebtoken");
 function logger(req, res, next) {
   info("METHOD: ", req.method);
   info("PATH: ", req.path);
-  info("BODY: ", { ...req.body, password: "####" });
+  info(
+    "BODY: ",
+    req.body.password ? { ...req.body, password: "####" } : req.body
+  );
   info("------------------");
   next();
 }

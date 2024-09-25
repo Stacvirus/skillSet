@@ -1,4 +1,4 @@
-get http://localhost:3000/api/v1/skill-sync
+get http://localhost:3000/api/v1/skill-sync/auth/users?page=3
 ###
 # sign up a user"client"
 post http://localhost:3000/api/v1/skill-sync/auth/sign-up

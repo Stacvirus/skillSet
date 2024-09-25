@@ -1,0 +1,234 @@
+[
+  {
+    "firstName": "Admin",
+    "lastName": "admin",
+    "phone": "654789040",
+    "password": "password",
+    "role": "ADMIN",
+    "email": "admin@gmail.com"
+  },
+  {
+    "firstName": "virus",
+    "lastName": "freelance",
+    "phone": "654789042",
+    "password": "password",
+    "role": "FREELANCE",
+    "email": "virus@gmail.com"
+  },
+  {
+    "firstName": "stac",
+    "lastName": "client",
+    "phone": "654789043",
+    "password": "password",
+    "role": "CLIENT",
+    "email": "stac@gmail.com"
+  },
+  {
+    "firstName": "John",
+    "lastName": "Doe",
+    "phone": "+1234567890",
+    "password": "password123",
+    "role": "FREELANCE",
+    "email": "john.doe@example.com"
+  },
+  {
+    "firstName": "Jane",
+    "lastName": "Smith",
+    "phone": "+9876543210",
+    "password": "password456",
+    "role": "CLIENT",
+    "email": "jane.smith@example.com"
+  },
+  {
+    "firstName": "Alice",
+    "lastName": "Johnson",
+    "phone": "+1122334455",
+    "password": "alice1234",
+    "role": "FREELANCE",
+    "email": "alice.johnson@example.com"
+  },
+  {
+    "firstName": "Bob",
+    "lastName": "Brown",
+    "phone": "+9988776655",
+    "password": "bobsecure",
+    "role": "CLIENT",
+    "email": "bob.brown@example.com"
+  },
+  {
+    "firstName": "Charlie",
+    "lastName": "Williams",
+    "phone": "+6677889900",
+    "password": "charlie789",
+    "role": "FREELANCE",
+    "email": "charlie.williams@example.com"
+  },
+  {
+    "firstName": "Emma",
+    "lastName": "Davis",
+    "phone": "+4433221100",
+    "password": "emma567",
+    "role": "CLIENT",
+    "email": "emma.davis@example.com"
+  },
+  {
+    "firstName": "Michael",
+    "lastName": "Taylor",
+    "phone": "+1112233445",
+    "password": "mikepass",
+    "role": "FREELANCE",
+    "email": "michael.taylor@example.com"
+  },
+  {
+    "firstName": "Sarah",
+    "lastName": "Martinez",
+    "phone": "+5511223344",
+    "password": "sarahpw123",
+    "role": "CLIENT",
+    "email": "sarah.martinez@example.com"
+  },
+  {
+    "firstName": "David",
+    "lastName": "Anderson",
+    "phone": "+6612345678",
+    "password": "david456",
+    "role": "FREELANCE",
+    "email": "david.anderson@example.com"
+  },
+  {
+    "firstName": "Olivia",
+    "lastName": "Wilson",
+    "phone": "+9988001122",
+    "password": "olivia789",
+    "role": "CLIENT",
+    "email": "olivia.wilson@example.com"
+  },
+  {
+    "firstName": "James",
+    "lastName": "Moore",
+    "phone": "+4488221133",
+    "password": "jamespass",
+    "role": "FREELANCE",
+    "email": "james.moore@example.com"
+  },
+  {
+    "firstName": "Isabella",
+    "lastName": "Thomas",
+    "phone": "+6677004455",
+    "password": "isa2020",
+    "role": "CLIENT",
+    "email": "isabella.thomas@example.com"
+  },
+  {
+    "firstName": "Liam",
+    "lastName": "Lee",
+    "phone": "+5556667788",
+    "password": "liampass",
+    "role": "FREELANCE",
+    "email": "liam.lee@example.com"
+  },
+  {
+    "firstName": "Sophia",
+    "lastName": "Lopez",
+    "phone": "+3344556677",
+    "password": "sophiapass",
+    "role": "CLIENT",
+    "email": "sophia.lopez@example.com"
+  },
+  {
+    "firstName": "William",
+    "lastName": "Harris",
+    "phone": "+7788990011",
+    "password": "william123",
+    "role": "FREELANCE",
+    "email": "william.harris@example.com"
+  },
+  {
+    "firstName": "Emily",
+    "lastName": "Clark",
+    "phone": "+1111222333",
+    "password": "emilypw",
+    "role": "CLIENT",
+    "email": "emily.clark@example.com"
+  },
+  {
+    "firstName": "Benjamin",
+    "lastName": "Lewis",
+    "phone": "+9988774455",
+    "password": "benjaminpw",
+    "role": "FREELANCE",
+    "email": "benjamin.lewis@example.com"
+  },
+  {
+    "firstName": "Mia",
+    "lastName": "Walker",
+    "phone": "+5566778899",
+    "password": "miapass123",
+    "role": "CLIENT",
+    "email": "mia.walker@example.com"
+  },
+  {
+    "firstName": "Ethan",
+    "lastName": "Robinson",
+    "phone": "+1234005566",
+    "password": "ethan456",
+    "role": "FREELANCE",
+    "email": "ethan.robinson@example.com"
+  },
+  {
+    "firstName": "Ava",
+    "lastName": "King",
+    "phone": "+6677889900",
+    "password": "avapass",
+    "role": "CLIENT",
+    "email": "ava.king@example.com"
+  },
+  {
+    "firstName": "Alexander",
+    "lastName": "Scott",
+    "phone": "+4455667788",
+    "password": "alexpass789",
+    "role": "FREELANCE",
+    "email": "alexander.scott@example.com"
+  },
+  {
+    "firstName": "Charlotte",
+    "lastName": "Green",
+    "phone": "+9988770011",
+    "password": "charlottepw",
+    "role": "CLIENT",
+    "email": "charlotte.green@example.com"
+  },
+  {
+    "firstName": "Daniel",
+    "lastName": "Young",
+    "phone": "+2233445566",
+    "password": "danielpw123",
+    "role": "FREELANCE",
+    "email": "daniel.young@example.com"
+  },
+  {
+    "firstName": "Amelia",
+    "lastName": "Baker",
+    "phone": "+4433221144",
+    "password": "ameliapass",
+    "role": "CLIENT",
+    "email": "amelia.baker@example.com"
+  },
+  {
+    "firstName": "Matthew",
+    "lastName": "Gonzalez",
+    "phone": "+1122334455",
+    "password": "mattpass2022",
+    "role": "FREELANCE",
+    "email": "matthew.gonzalez@example.com"
+  },
+  {
+    "firstName": "Harper",
+    "lastName": "Perez",
+    "phone": "+5566778899",
+    "password": "harperpass",
+    "role": "CLIENT",
+    "email": "harper.perez@example.com"
+  }
+]
