@@ -9,6 +9,7 @@ const schema = new Schema({
   email: { type: String, required: true, unique: true },
   role: { type: String, enum: ["CLIENT", "FREELANCE", "ADMIN"] },
   createdAt: Date,
+  profileImage: String,
   notifications: [{ type: Schema.Types.ObjectId, ref: "Notification" }],
 });
 

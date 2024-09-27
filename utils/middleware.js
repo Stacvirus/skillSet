@@ -1,3 +1,4 @@
+const User = require("../model/user");
 const { SECRET } = require("./config");
 const { info, error } = require("./logger");
 const jwt = require("jsonwebtoken");
@@ -34,6 +35,8 @@ function errorHandler(err, req, res, next) {
       .json({ status: false, data: "token missing or invalid" });
   } else if (err.name === "TokenExpiredError") {
     return res.status(401).json({ status: false, data: "token expired" });
+  } else if (err.name === "MulterError") {
+    return res.status(401).json({ status: false, message: err.message });
   }
 
   next(err);
@@ -47,9 +50,28 @@ function tokenBuilder(id, email, role) {
   return jwt.sign({ id, email, role }, SECRET, { expiresIn: "6H" });
 }
 
+async function tokenExtractor(req, res, next) {
+  const auth = req.get("authorization");
+  if (auth && auth.startsWith("Bearer ")) {
+    req.token = auth.replace("Bearer ", "");
+  }
+  next();
+}
+
+async function userExtractor(req, res, next) {
+  try {
+    req.user = await User.findById(jwt.verify(req.token, SECRET).id);
+  } catch (error) {
+    next(error);
+  }
+  next();
+}
+
 module.exports = {
   logger,
   errorHandler,
   unknownEndpoint,
   tokenBuilder,
+  tokenExtractor,
+  userExtractor,
 };

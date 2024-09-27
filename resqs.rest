@@ -5,10 +5,25 @@ post http://localhost:3000/api/v1/skill-sync/auth/sign-up
 Content-Type: application/json
 
 {
-    "firstName": "Admin",
-    "lastName": "admin",
-    "phone": 654789040,
+    "firstName": "satcha",
+    "lastName": "takam",
+    "phone": "+237654789040",
     "password": "password",
-    "role": "ADMIN",
-    "email": "admin@gmail.com"
+    "role": "FREELANCE",
+    "email": "satcha@gmail.com"
+}
+###
+# delete a user
+
+delete http://localhost:3000/api/v1/skill-sync/auth/users/66f41191cb1b3564cc694c4066f41191cb1b3564cc694c40
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ZjQxMTkxY2IxYjM1NjRjYzY5NGM0MCIsImVtYWlsIjoic2F0Y2hhQGdtYWlsLmNvbSIsInJvbGUiOiJGUkVFTEFOQ0UiLCJpYXQiOjE3MjcyNzEzMTMsImV4cCI6MTcyNzI5MjkxM30.UDxzlv0Y2tVPwN7B57boYKoNQth2b1EPbW-leBq_bVQ
+
+###
+# login tests
+post http://localhost:3000/api/v1/skill-sync/auth/login
+Content-Type: application/json
+
+{
+    "email": "satcha@gmail.com",
+    "password": "password"
 }
