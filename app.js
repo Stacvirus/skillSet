@@ -13,6 +13,10 @@ const {
 
 const userRouter = require("./controller/users");
 const loginRouter = require("./controller/login");
+const freelanceRouter = require("./controller/freelances");
+const commentRouter = require("./controller/comments");
+const categoryRouter = require("./controller/categories");
+const competenceRouter = require("./controller/competences");
 
 mongoose
   .connect(MONGODB_URI)
@@ -31,6 +35,10 @@ app.get(BASE_URI, (req, res) => {
 
 app.use(`${BASE_URI}/auth`, userRouter);
 app.use(`${BASE_URI}/auth`, loginRouter);
+app.use(`${BASE_URI}/freelance`, freelanceRouter);
+app.use(`${BASE_URI}/comment`, commentRouter);
+app.use(`${BASE_URI}/category`, categoryRouter); // e.g frontEnd, backend, UI/UX ...
+app.use(`${BASE_URI}/competence`, competenceRouter); // e.g java, javaScript, figma ...
 
 app.use(unknownEndpoint);
 app.use(errorHandler);

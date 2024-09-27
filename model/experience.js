@@ -2,12 +2,14 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const schema = new Schema({
-  tarif: { type: Number, required: true },
-  rating: Number,
-  city: { type: String, required: true },
-  userId: { type: Schema.Types.ObjectId, ref: "User" },
-  categories: [{ type: Schema.Types.ObjectId, ref: "Category" }],
+  title: { type: String, required: true },
+  description: { type: String, required: true },
+  type: { type: String, enum: ["REMOTE", "IN-OFFICE", "HYBRID"] },
   competences: [{ type: Schema.Types.ObjectId, ref: "Competence" }],
+  createdBy: { type: Schema.Types.ObjectId, ref: "Freelance" },
+  createdAt: { type: Date, immutable: true },
+  start: Date,
+  end: Date,
 });
 
 schema.set("toJSON", {
@@ -18,4 +20,4 @@ schema.set("toJSON", {
   },
 });
 
-module.exports = mongoose.model("Freelance", schema);
+module.exports = mongoose.model("Experience", schema);

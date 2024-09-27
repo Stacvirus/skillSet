@@ -98,10 +98,21 @@ router.get("/users/:user_id", async (req, res, next) => {
 // update only non essential datas like first and last Names,
 router.put("/users/details/:user_id", async (req, res, next) => {
   const { user_id } = req.params;
+  const options = {};
+  const { firstName, lastName } = req.body;
+  if (!firstName || !lastName)
+    return res.status(401).json({
+      status: false,
+      data: "all inputs are missing, please fill atleast one of them",
+    });
+
+  firstName && (options.firstName = firstName);
+  lastName && (options.lastName = lastName);
   try {
+    const user = await User.findByIdAndUpdate(user_id, options, { new: true });
     res.send({
       status: true,
-      data: await User.findByIdAndUpdate(user_id, req.body),
+      data: user,
     });
   } catch (error) {
     next(error);
@@ -125,7 +136,7 @@ router.delete("/users/:user_id", userExtractor, async (req, res, next) => {
 
 // update profile image
 router.put(
-  "/users/profile/",
+  "/users/set-profile/",
   upload.single("profile"),
   userExtractor,
   async (req, res, next) => {
@@ -136,9 +147,13 @@ router.put(
     }
     const profileImage = `${HOST}:${PORT}/images/profiles/${req.file.filename}`;
     try {
-      const user = await User.findByIdAndUpdate(req.user.id, {
-        profileImage,
-      });
+      const user = await User.findByIdAndUpdate(
+        req.user.id,
+        {
+          profileImage,
+        },
+        { new: true }
+      );
 
       res.send({ status: true, data: user });
     } catch (error) {
@@ -178,9 +193,13 @@ router.post("/pass-forgot", userExtractor, async (req, res, next) => {
 router.put("/pass-reset/:user_id", async (req, res, next) => {
   const { user_id } = req.params;
   try {
-    await User.findByIdAndUpdate(user_id, {
-      password: await bcrypt.hash(req.body.password, 10),
-    });
+    await User.findByIdAndUpdate(
+      user_id,
+      {
+        password: await bcrypt.hash(req.body.password, 10),
+      },
+      { new: true }
+    );
     res.status(200).json({ status: true, data: "password reset successfully" });
   } catch (error) {
     next(error);
@@ -196,9 +215,13 @@ router.put("/pass-reset", userExtractor, async (req, res, next) => {
     return res.status(401).json({ status: false, data: "incorrect password" });
 
   try {
-    const updatedUser = await User.findByIdAndUpdate(user.id, {
-      password: await bcrypt.hash(newPass, 10),
-    });
+    const updatedUser = await User.findByIdAndUpdate(
+      user.id,
+      {
+        password: await bcrypt.hash(newPass, 10),
+      },
+      { new: true }
+    );
     const token = tokenBuilder(
       updatedUser.email,
       updatedUser.role,

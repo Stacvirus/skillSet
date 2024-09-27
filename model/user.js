@@ -8,9 +8,8 @@ const schema = new Schema({
   password: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   role: { type: String, enum: ["CLIENT", "FREELANCE", "ADMIN"] },
-  createdAt: Date,
+  createdAt: { type: Date, immutable: true },
   profileImage: String,
-  notifications: [{ type: Schema.Types.ObjectId, ref: "Notification" }],
 });
 
 schema.set("toJSON", {
