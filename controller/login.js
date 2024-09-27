@@ -9,7 +9,7 @@ router.post("/login", async (req, res, next) => {
   if (!email || !password) {
     return res
       .status(500)
-      .json({ status: false, message: "some inputs missiong" });
+      .json({ status: false, data: "some inputs missiong" });
   }
 
   try {
@@ -20,10 +20,10 @@ router.post("/login", async (req, res, next) => {
       user == null ? false : await bcrypt.compare(password, user.password);
 
     if (!(user && isCorrect)) {
-      return res.status(401).json({ message: "wrong user credentials" });
+      return res.status(401).json({ data: "wrong user credentials" });
     }
     const token = tokenBuilder(user.id, email, user.role);
-    res.send({ token, user });
+    res.send({ status: true, data: { token, user } });
   } catch (error) {
     next(error);
   }

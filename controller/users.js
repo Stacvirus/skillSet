@@ -1,10 +1,15 @@
 const router = require("express").Router();
 const User = require("../model/user");
 const bcrypt = require("bcrypt");
-const { tokenBuilder, userExtractor } = require("../utils/middleware");
+const {
+  tokenBuilder,
+  userExtractor,
+  transporter,
+} = require("../utils/middleware");
 
 const multer = require("multer");
-const { HOST, PORT } = require("../utils/config");
+const { HOST, PORT, EMAIL } = require("../utils/config");
+const { error } = require("../utils/logger");
 const storage = multer.diskStorage({
   destination: (req, file, fn) => {
     fn(null, "./public/images/profiles");
@@ -84,7 +89,7 @@ router.get("/users", async (req, res, next) => {
 router.get("/users/:user_id", async (req, res, next) => {
   const { user_id } = req.params;
   try {
-    res.send(await User.findById(user_id));
+    res.send({ status: true, data: await User.findById(user_id) });
   } catch (error) {
     next(error);
   }
@@ -94,7 +99,10 @@ router.get("/users/:user_id", async (req, res, next) => {
 router.put("/users/details/:user_id", async (req, res, next) => {
   const { user_id } = req.params;
   try {
-    res.send(await User.findByIdAndUpdate(user_id, req.body));
+    res.send({
+      status: true,
+      data: await User.findByIdAndUpdate(user_id, req.body),
+    });
   } catch (error) {
     next(error);
   }
@@ -104,14 +112,12 @@ router.put("/users/details/:user_id", async (req, res, next) => {
 router.delete("/users/:user_id", userExtractor, async (req, res, next) => {
   const { user_id } = req.params;
   if (req.user.id.toString() != user_id || req.user.role != "ADMIN") {
-    return res
-      .status(403)
-      .json({ status: false, message: "unAuthorize action" });
+    return res.status(403).json({ status: false, data: "unAuthorize action" });
   }
 
   try {
     await User.findByIdAndDelete(user_id);
-    res.send({ status: true, message: "successful deletion" });
+    res.send({ status: true, data: "successful deletion" });
   } catch (error) {
     next(error);
   }
@@ -126,7 +132,7 @@ router.put(
     if (!req.file) {
       return res
         .status(401)
-        .json({ status: false, message: "profile image not passed" });
+        .json({ status: false, data: "profile image not passed" });
     }
     const profileImage = `${HOST}:${PORT}/images/profiles/${req.file.filename}`;
     try {
@@ -134,12 +140,76 @@ router.put(
         profileImage,
       });
 
-      res.send(user);
+      res.send({ status: true, data: user });
     } catch (error) {
       next(error);
     }
   }
 );
+
+// email verification phase
+router.post("/pass-forgot", userExtractor, async (req, res, next) => {
+  const { email, link } = req.body;
+  const user = await User.findOne({ email });
+  if (!user)
+    return res
+      .status(404)
+      .json({ status: false, data: "user with email doesn't exists" });
+
+  const mailOptions = {
+    from: EMAIL,
+    to: email,
+    subject: "Mail verification",
+    html: `
+      <p>verify your email addresse to complete reset password action</p>
+      <p>press <a href=${link}>here</a> to proceed</p>
+    `,
+  };
+  try {
+    await transporter.sendMail(mailOptions);
+    res.status(200).json({ status: true, data: "mail send successfully" });
+  } catch (err) {
+    error(err);
+    res.status(405).json({ status: false, data: err.data });
+  }
+});
+
+// reset password without old one verification
+router.put("/pass-reset/:user_id", async (req, res, next) => {
+  const { user_id } = req.params;
+  try {
+    await User.findByIdAndUpdate(user_id, {
+      password: await bcrypt.hash(req.body.password, 10),
+    });
+    res.status(200).json({ status: true, data: "password reset successfully" });
+  } catch (error) {
+    next(error);
+  }
+});
+
+// reset password if old is true
+router.put("/pass-reset", userExtractor, async (req, res, next) => {
+  const { user } = req;
+  const { oldPass, newPass } = req.body;
+  const isCorrect = await bcrypt.compare(oldPass, user.password);
+  if (!isCorrect)
+    return res.status(401).json({ status: false, data: "incorrect password" });
+
+  try {
+    const updatedUser = await User.findByIdAndUpdate(user.id, {
+      password: await bcrypt.hash(newPass, 10),
+    });
+    const token = tokenBuilder(
+      updatedUser.email,
+      updatedUser.role,
+      updatedUser.id
+    );
+    res.send({ status: true, data: { token, user: updatedUser } });
+  } catch (error) {
+    next(error);
+  }
+});
+
 // const userData = require("../data/users.json");
 
 // const insertArtisans = async () => {

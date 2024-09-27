@@ -1,7 +1,8 @@
 const User = require("../model/user");
-const { SECRET } = require("./config");
+const { SECRET, EMAIL, PASSWORD } = require("./config");
 const { info, error } = require("./logger");
 const jwt = require("jsonwebtoken");
+const nodemailer = require("nodemailer");
 
 function logger(req, res, next) {
   info("METHOD: ", req.method);
@@ -67,6 +68,17 @@ async function userExtractor(req, res, next) {
   next();
 }
 
+// mail transporter config
+function transporter() {
+  nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: EMAIL,
+      pass: PASSWORD,
+    },
+  });
+}
+
 module.exports = {
   logger,
   errorHandler,
@@ -74,4 +86,5 @@ module.exports = {
   tokenBuilder,
   tokenExtractor,
   userExtractor,
+  transporter,
 };
