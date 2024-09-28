@@ -6,7 +6,6 @@ const schema = new Schema({
   status: { type: String, enum: ["PENDING", "COMPLETE", "CANCELED"] },
   mission: { type: Schema.Types.ObjectId, ref: "Mission", required: true },
   collaborators: [{ type: Schema.Types.ObjectId, ref: "Freelance" }],
-  tasks: [{ type: Schema.Types.ObjectId, ref: "Task" }],
   createdAt: { type: Date, immutable: true },
 });
 

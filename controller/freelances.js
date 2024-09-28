@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const Freelance = require("../model/freelance");
+const User = require("../model/user");
 const { userExtractor } = require("../utils/middleware");
 
 // create freelance table
@@ -64,13 +65,28 @@ router.put("/:id", userExtractor, async (req, res, next) => {
   const options = {};
   city && (options.city = city);
   tarif && (options.tarif = tarif);
-  console.log("options", options);
 
   try {
     const freelance = await Freelance.findByIdAndUpdate(id, options, {
       new: true,
     });
     res.send({ status: true, data: freelance });
+  } catch (error) {
+    next(error);
+  }
+});
+
+// delete freelance account and user table
+router.delete("/:id", userExtractor, async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    const freelance = await Freelance.findById(id);
+    await Freelance.findByIdAndDelete(id);
+    await User.findByIdAndDelete(freelance.userId);
+    res.send({
+      status: true,
+      data: "deletion successful",
+    });
   } catch (error) {
     next(error);
   }
