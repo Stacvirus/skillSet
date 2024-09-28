@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const Competence = require("../model/competence");
+const { userExtractor } = require("../utils/middleware");
 
 router.post("/", async (req, res, next) => {
   const { name } = req.body;
@@ -25,6 +26,34 @@ router.get("/", async (req, res, next) => {
     res.send({
       status: true,
       data: await Competence.find({}),
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
+// update a category
+router.put("/:id", async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    const cat = await Competence.findByIdAndUpdate(id, req.body, { new: true });
+    res.send({
+      status: true,
+      data: cat,
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
+// delete a category
+router.delete("/:id", userExtractor, async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    await Competence.findByIdAndDelete(id);
+    res.send({
+      status: true,
+      data: "deletion successfull",
     });
   } catch (error) {
     next(error);

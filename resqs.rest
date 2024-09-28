@@ -27,3 +27,57 @@ Content-Type: application/json
     "email": "satcha@gmail.com",
     "password": "password"
 }
+
+###
+# create mission
+post http://localhost:3000/api/v1/skill-sync/missions
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ZjQxMTkxY2IxYjM1NjRjYzY5NGM0MCIsImVtYWlsIjoic2F0Y2hhQGdtYWlsLmNvbSIsInJvbGUiOiJGUkVFTEFOQ0UiLCJpYXQiOjE3Mjc1MTQ4NjAsImV4cCI6MTcyNzUzNjQ2MH0.GlWZtsGrFRUh-S2hDI3_2mdgyN8p7kyLH0xmVvJxGrc
+
+{
+    "title": "web page",
+    "description": "please I want a web site that will my corporation in the best and most attractive way.",
+    "budget": {
+        "value": 150,
+        "currency": "$"
+        }
+}
+###
+# get all missions
+get http://localhost:3000/api/v1/skill-sync/missions/66f7cbddd8ed75bd29e1c871
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ZjQxMTkxY2IxYjM1NjRjYzY5NGM0MCIsImVtYWlsIjoic2F0Y2hhQGdtYWlsLmNvbSIsInJvbGUiOiJGUkVFTEFOQ0UiLCJpYXQiOjE3Mjc1MTQ4NjAsImV4cCI6MTcyNzUzNjQ2MH0.GlWZtsGrFRUh-S2hDI3_2mdgyN8p7kyLH0xmVvJxGrc
+
+###
+# engage a freelancer
+post http://localhost:3000/api/v1/skill-sync/missions/engage/66f6b0f1048d94c047349078/66f7cbfad8ed75bd29e1c874
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ZjQxMTkxY2IxYjM1NjRjYzY5NGM0MCIsImVtYWlsIjoic2F0Y2hhQGdtYWlsLmNvbSIsInJvbGUiOiJGUkVFTEFOQ0UiLCJpYXQiOjE3Mjc1MTQ4NjAsImV4cCI6MTcyNzUzNjQ2MH0.GlWZtsGrFRUh-S2hDI3_2mdgyN8p7kyLH0xmVvJxGrc
+
+###
+# create a category
+get http://localhost:3000/api/v1/skill-sync/missions
+Content-Type: application/json
+
+{
+    "name": "Project Managment"
+}
+###
+# add category to a mission
+post http://localhost:3000/api/v1/skill-sync/missions/set-cat/66f7cbddd8ed75bd29e1c871
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ZjQxMTkxY2IxYjM1NjRjYzY5NGM0MCIsImVtYWlsIjoic2F0Y2hhQGdtYWlsLmNvbSIsInJvbGUiOiJGUkVFTEFOQ0UiLCJpYXQiOjE3Mjc1MTQ4NjAsImV4cCI6MTcyNzUzNjQ2MH0.GlWZtsGrFRUh-S2hDI3_2mdgyN8p7kyLH0xmVvJxGrc
+
+{
+    "categories": [
+        "66f7daf6eb6ee3813998fa1f",
+        "66f7db00eb6ee3813998fa21"
+    ]
+}
+###
+# delete category from a mission
+DELETE  http://localhost:3000/api/v1/skill-sync/missions/del-cat/66f7cbddd8ed75bd29e1c871
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ZjQxMTkxY2IxYjM1NjRjYzY5NGM0MCIsImVtYWlsIjoic2F0Y2hhQGdtYWlsLmNvbSIsInJvbGUiOiJGUkVFTEFOQ0UiLCJpYXQiOjE3Mjc1MTQ4NjAsImV4cCI6MTcyNzUzNjQ2MH0.GlWZtsGrFRUh-S2hDI3_2mdgyN8p7kyLH0xmVvJxGrc
+
+{
+    "category": "66f7db00eb6ee3813998fa21"
+}

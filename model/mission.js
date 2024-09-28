@@ -4,7 +4,10 @@ const Schema = mongoose.Schema;
 const schema = new Schema({
   title: { type: String, required: true },
   description: { type: String, required: true },
-  budget: { type: Number, required: true },
+  budget: {
+    value: { type: Number, required: true },
+    currency: { type: String, required: true, default: "XAF" },
+  },
   status: { type: String, enum: ["OPEN", "CLOSED"] },
   categories: [{ type: Schema.Types.ObjectId, ref: "Category" }],
   candidates: [{ type: Schema.Types.ObjectId, ref: "Freelance" }],
