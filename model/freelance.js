@@ -2,7 +2,10 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const schema = new Schema({
-  tarif: { type: Number, required: true },
+  tarif: {
+    value: { type: Number, required: true },
+    currency: { type: String, default: "XAF" },
+  },
   rating: Number,
   city: { type: String, required: true },
   userId: { type: Schema.Types.ObjectId, ref: "User" },

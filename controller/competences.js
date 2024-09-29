@@ -12,10 +12,10 @@ router.post("/", async (req, res, next) => {
   try {
     const competence = new Competence({
       name,
-      createdAt: new Date.now(),
+      createdAt: new Date(),
     });
     await competence.save();
-    res.send({ status: true, data: Competence });
+    res.send({ status: true, data: competence });
   } catch (error) {
     next(error);
   }

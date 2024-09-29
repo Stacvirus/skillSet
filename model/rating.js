@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const schema = new Schema({
   value: { type: Number, required: true },
   emiteBy: { type: Schema.Types.ObjectId, ref: "User" },
-  emiteFor: { type: String, required: true }, // represent the id of rating target like project or training
+  emiteFor: { type: String, required: true }, // represent the id of rating target like freelance or training
   createdAt: { type: Date, immutable: true },
 });
 

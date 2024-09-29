@@ -13,6 +13,17 @@ Content-Type: application/json
     "email": "satcha@gmail.com"
 }
 ###
+# create a freelance
+post http://localhost:3000/api/v1/skill-sync/freelances/66f41191cb1b3564cc694c40
+Content-Type: application/json
+
+{
+    "tarif": {
+        "value": 1500
+    },
+    "city": "Douala"
+}
+###
 # delete a user
 
 delete http://localhost:3000/api/v1/skill-sync/auth/users/66f41191cb1b3564cc694c4066f41191cb1b3564cc694c40
@@ -45,7 +56,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ZjQxMTkxY
 ###
 # get all missions
 get http://localhost:3000/api/v1/skill-sync/missions/66f7cbddd8ed75bd29e1c871
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ZjQxMTkxY2IxYjM1NjRjYzY5NGM0MCIsImVtYWlsIjoic2F0Y2hhQGdtYWlsLmNvbSIsInJvbGUiOiJGUkVFTEFOQ0UiLCJpYXQiOjE3Mjc1MTQ4NjAsImV4cCI6MTcyNzUzNjQ2MH0.GlWZtsGrFRUh-S2hDI3_2mdgyN8p7kyLH0xmVvJxGrc
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ZjQxMTkxY2IxYjM1NjRjYzY5NGM0MCIsImVtYWlsIjoic2F0Y2hhQGdtYWlsLmNvbSIsInJvbGUiOiJGUkVFTEFOQ0UiLCJpYXQiOjE3Mjc1NjQ4ODYsImV4cCI6MTcyNzU4NjQ4Nn0.tIfNwqB4I3rGGRw_u9-CYRE2cnFwUxhrFDbeI3KKzHw
 
 ###
 # engage a freelancer
@@ -54,8 +65,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ZjQxMTkxY
 
 ###
 # create a category
-get http://localhost:3000/api/v1/skill-sync/missions
+get http://localhost:3000/api/v1/skill-sync/missions/get/user
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ZjQxMTkxY2IxYjM1NjRjYzY5NGM0MCIsImVtYWlsIjoic2F0Y2hhQGdtYWlsLmNvbSIsInJvbGUiOiJGUkVFTEFOQ0UiLCJpYXQiOjE3Mjc1NjQ4ODYsImV4cCI6MTcyNzU4NjQ4Nn0.tIfNwqB4I3rGGRw_u9-CYRE2cnFwUxhrFDbeI3KKzHw
 
 {
     "name": "Project Managment"
@@ -64,7 +76,7 @@ Content-Type: application/json
 # add category to a mission
 post http://localhost:3000/api/v1/skill-sync/missions/set-cat/66f7cbddd8ed75bd29e1c871
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ZjQxMTkxY2IxYjM1NjRjYzY5NGM0MCIsImVtYWlsIjoic2F0Y2hhQGdtYWlsLmNvbSIsInJvbGUiOiJGUkVFTEFOQ0UiLCJpYXQiOjE3Mjc1MTQ4NjAsImV4cCI6MTcyNzUzNjQ2MH0.GlWZtsGrFRUh-S2hDI3_2mdgyN8p7kyLH0xmVvJxGrc
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ZjQxMTkxY2IxYjM1NjRjYzY5NGM0MCIsImVtYWlsIjoic2F0Y2hhQGdtYWlsLmNvbSIsInJvbGUiOiJGUkVFTEFOQ0UiLCJpYXQiOjE3Mjc2MDQyMDIsImV4cCI6MTcyNzYyNTgwMn0.VGi3euOD5XGTz1BPatLQ_x0jnqQ7d9pBd_DxQ8qGdWw
 
 {
     "categories": [
@@ -80,4 +92,72 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ZjQxMTkxY
 
 {
     "category": "66f7db00eb6ee3813998fa21"
+}
+
+
+###
+# postulate to mission
+post  http://localhost:3000/api/v1/skill-sync/missions/postulate/66f7cbddd8ed75bd29e1c871
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ZjQxMTkxY2IxYjM1NjRjYzY5NGM0MCIsImVtYWlsIjoic2F0Y2hhQGdtYWlsLmNvbSIsInJvbGUiOiJGUkVFTEFOQ0UiLCJpYXQiOjE3Mjc1NjQ4ODYsImV4cCI6MTcyNzU4NjQ4Nn0.tIfNwqB4I3rGGRw_u9-CYRE2cnFwUxhrFDbeI3KKzHw
+
+###
+# get all projects
+get http://localhost:3000/api/v1/skill-sync/projects/get/freelance
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ZjQxMTkxY2IxYjM1NjRjYzY5NGM0MCIsImVtYWlsIjoic2F0Y2hhQGdtYWlsLmNvbSIsInJvbGUiOiJGUkVFTEFOQ0UiLCJpYXQiOjE3Mjc2MDQyMDIsImV4cCI6MTcyNzYyNTgwMn0.VGi3euOD5XGTz1BPatLQ_x0jnqQ7d9pBd_DxQ8qGdWw
+
+###
+# create a task
+post http://localhost:3000/api/v1/skill-sync/tasks/66f6b0f1048d94c047349078/66f7d533830dab7f2dd0c0b
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ZjQxMTkxY2IxYjM1NjRjYzY5NGM0MCIsImVtYWlsIjoic2F0Y2hhQGdtYWlsLmNvbSIsInJvbGUiOiJGUkVFTEFOQ0UiLCJpYXQiOjE3Mjc2MDQyMDIsImV4cCI6MTcyNzYyNTgwMn0.VGi3euOD5XGTz1BPatLQ_x0jnqQ7d9pBd_DxQ8qGdWw
+
+{
+    "title": "login endpoint",
+    "description": "create and endpoint: auth/login that will permits users to login"
+}
+
+###
+# add a competence to a freelance
+post http://localhost:3000/api/v1/skill-sync/freelances/set/com
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ZjQxMTkxY2IxYjM1NjRjYzY5NGM0MCIsImVtYWlsIjoic2F0Y2hhQGdtYWlsLmNvbSIsInJvbGUiOiJGUkVFTEFOQ0UiLCJpYXQiOjE3Mjc2MDQyMDIsImV4cCI6MTcyNzYyNTgwMn0.VGi3euOD5XGTz1BPatLQ_x0jnqQ7d9pBd_DxQ8qGdWw
+
+{
+    "competences": [
+        "66f933dfe066d7e5b8f65e78",
+        "66f933f8af654127d98b4887"
+    ]
+}
+
+###
+# add a categories to a freelance
+post http://localhost:3000/api/v1/skill-sync/freelances/set/cat
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ZjQxMTkxY2IxYjM1NjRjYzY5NGM0MCIsImVtYWlsIjoic2F0Y2hhQGdtYWlsLmNvbSIsInJvbGUiOiJGUkVFTEFOQ0UiLCJpYXQiOjE3Mjc2MDQyMDIsImV4cCI6MTcyNzYyNTgwMn0.VGi3euOD5XGTz1BPatLQ_x0jnqQ7d9pBd_DxQ8qGdWw
+
+{
+    "categories": [
+        "66f7daf6eb6ee3813998fa1f",
+        "66f7db08eb6ee3813998fa23"
+    ]
+}
+
+###
+# create competence
+post http://localhost:3000/api/v1/skill-sync/competences
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ZjQxMTkxY2IxYjM1NjRjYzY5NGM0MCIsImVtYWlsIjoic2F0Y2hhQGdtYWlsLmNvbSIsInJvbGUiOiJGUkVFTEFOQ0UiLCJpYXQiOjE3Mjc2MDQyMDIsImV4cCI6MTcyNzYyNTgwMn0.VGi3euOD5XGTz1BPatLQ_x0jnqQ7d9pBd_DxQ8qGdWw
+
+{
+    "name": "Design"
+}
+
+###
+# add a categories to a freelance
+delete http://localhost:3000/api/v1/skill-sync/freelances/del/com
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ZjQxMTkxY2IxYjM1NjRjYzY5NGM0MCIsImVtYWlsIjoic2F0Y2hhQGdtYWlsLmNvbSIsInJvbGUiOiJGUkVFTEFOQ0UiLCJpYXQiOjE3Mjc2MDQyMDIsImV4cCI6MTcyNzYyNTgwMn0.VGi3euOD5XGTz1BPatLQ_x0jnqQ7d9pBd_DxQ8qGdWw
+
+{
+    "competence": "66f933dfe066d7e5b8f65e78"
 }

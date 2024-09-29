@@ -18,6 +18,9 @@ const commentRouter = require("./controller/comments");
 const categoryRouter = require("./controller/categories");
 const competenceRouter = require("./controller/competences");
 const missionRouter = require("./controller/missions");
+const ratingRouter = require("./controller/ratings");
+const projectgRouter = require("./controller/projects");
+const taskRouter = require("./controller/tasks");
 
 mongoose
   .connect(MONGODB_URI)
@@ -41,6 +44,9 @@ app.use(`${BASE_URI}/comments`, commentRouter);
 app.use(`${BASE_URI}/categories`, categoryRouter); // e.g frontEnd, backend, UI/UX ...
 app.use(`${BASE_URI}/missions`, missionRouter);
 app.use(`${BASE_URI}/competences`, competenceRouter); // e.g java, javaScript, figma ...
+app.use(`${BASE_URI}/ratings`, ratingRouter);
+app.use(`${BASE_URI}/projects`, projectgRouter);
+app.use(`${BASE_URI}/tasks`, taskRouter);
 
 app.use(unknownEndpoint);
 app.use(errorHandler);

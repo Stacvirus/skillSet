@@ -6,7 +6,7 @@ const schema = new Schema({
   description: { type: String, required: true },
   asignTo: { type: Schema.Types.ObjectId, ref: "Freelance" },
   asignFor: { type: Schema.Types.ObjectId, ref: "Project" },
-  isDone: Boolean,
+  isDone: { type: Boolean, default: false },
   createdAt: { type: Date, immutable: true },
 });
 

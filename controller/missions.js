@@ -67,7 +67,6 @@ router.get("/:id", userExtractor, async (req, res, next) => {
   try {
     const mission = await Mission.findById(id)
       .populate("emitBy")
-      .populate("candidates")
       .populate("categories");
     res.send({
       status: true,
@@ -79,11 +78,11 @@ router.get("/:id", userExtractor, async (req, res, next) => {
 });
 
 // get missions emited by a particular user
-router.get("/user/:user_id", userExtractor, async (req, res, next) => {
-  const { user_id } = req.params;
+router.get("/get/user", userExtractor, async (req, res, next) => {
+  console.log("user id: ", req.user.id);
+
   try {
-    const missions = await Mission.find({ emitBy: user_id })
-      .populate("emitBy")
+    const missions = await Mission.find({ emitBy: req.user.id })
       .populate("candidates")
       .populate("categories");
     res.send({
@@ -96,28 +95,31 @@ router.get("/user/:user_id", userExtractor, async (req, res, next) => {
 });
 
 // get missions where a freelance have postulated
-router.get(
-  "/freelance/:freelance_id",
-  userExtractor,
-  async (req, res, next) => {
-    const { freelance_id } = req.params;
-    try {
-      const missions = await Mission.find({})
-        .populate("emitBy")
-        .populate("candidates")
-        .populate("categories");
-      const postule = missions.filter((m) => {
-        return m.candidates.filter((c) => c.id.toString() == freelance_id);
-      });
-      res.send({
-        status: true,
-        data: postule,
-      });
-    } catch (error) {
-      next(error);
-    }
+router.get("/get/freelance", userExtractor, async (req, res, next) => {
+  //const { freelance_id } = req.params;
+
+  try {
+    const freelance = await Freelance.findOne({ userId: req.user.id });
+    const missions = await Mission.find({})
+      .populate("emitBy")
+      .populate("categories");
+
+    const postule = missions.filter((m) => m.candidates.includes(freelance.id));
+
+    // missions.forEach((m) => {
+    //   m.candidates.forEach((c) => {
+    //     if (c == freelance.id) postule = postule.concat(m);
+    //   });
+    // });
+
+    res.send({
+      status: true,
+      data: postule,
+    });
+  } catch (error) {
+    next(error);
   }
-);
+});
 
 // engage a mission to a freelance
 router.post(
@@ -165,7 +167,6 @@ router.get("/winner/:freelance_id", userExtractor, async (req, res, next) => {
   try {
     const missions = await Mission.find({ engage: freelance_id })
       .populate("emitBy")
-      .populate("candidates")
       .populate("categories");
     res.send({
       status: true,
@@ -219,7 +220,7 @@ router.post("/set-cat/:mission_id", userExtractor, async (req, res, next) => {
   }
 });
 
-// delete a category form mission
+// delete a category from mission
 router.delete("/del-cat/:mission_id", userExtractor, async (req, res, next) => {
   const { mission_id } = req.params;
   const { category } = req.body;
@@ -245,6 +246,36 @@ router.delete("/del-cat/:mission_id", userExtractor, async (req, res, next) => {
     res.send({
       status: true,
       data: mission,
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
+// enable a freelance to postulate to a mission
+router.post("/postulate/:mission_id", userExtractor, async (req, res, next) => {
+  const { mission_id } = req.params;
+  // verify the existence of the mission
+  const mission = await Mission.findById(mission_id);
+  if (!mission)
+    return res.status(404).send({
+      status: false,
+      data: "mission not found, please choose another mission",
+    });
+
+  // check the existence of the freelance
+  const freelance = await Freelance.findOne({ userId: req.user.id });
+  if (!freelance)
+    return res.status(404).send({
+      status: false,
+      data: "freelance not found, please choose another user",
+    });
+  try {
+    mission.candidates = mission.candidates.concat(freelance.id);
+    await mission.save();
+    res.send({
+      status: true,
+      data: "process finished successfully",
     });
   } catch (error) {
     next(error);

@@ -17,11 +17,15 @@ function logger(req, res, next) {
 
 function errorHandler(err, req, res, next) {
   error(err.name, err.message);
+  error(err);
 
   if (err.name === "CastError") {
     return res.status(400).send({ status: false, data: "malformatted id" });
   } else if (err.name === "ValidationError") {
-    return res.status(400).json({ status: false, data: err.message });
+    return res.status(400).json({
+      status: false,
+      data: "item not found in table, verify id: " + err.message,
+    });
   } else if (
     err.name === "MongoServerError" &&
     err.message.includes("E11000 duplicate key error")
@@ -39,6 +43,13 @@ function errorHandler(err, req, res, next) {
   } else if (err.name === "MulterError") {
     return res.status(401).json({ status: false, message: err.message });
   }
+  // else if (err.name === "TypeError") {
+  //   return res.status(500).json({
+  //     status: false,
+  //     message:
+  //       "internal servier error, if this persist don't hesitate to contact the support ...",
+  //   });
+  // }
 
   next(err);
 }

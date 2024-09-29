@@ -3,9 +3,10 @@ const Schema = mongoose.Schema;
 
 const schema = new Schema({
   message: { type: String, required: true },
-  response: { type: String, enum: ["ACCEPT", "REFUSED"] },
+  response: { type: String, enum: ["ACCEPT", "REFUSED"], default: "PENDING" },
   emitTo: [{ type: Schema.Types.ObjectId, ref: "Freelance" }],
   emitBy: [{ type: Schema.Types.ObjectId, ref: "Freelance" }],
+  emitFor: { type: Schema.Types.ObjectId, ref: "Project" },
   isRead: Boolean,
   createdAt: { type: Date, immutable: true },
 });
