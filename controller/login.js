@@ -14,7 +14,6 @@ router.post("/login", async (req, res, next) => {
 
   try {
     const user = await User.findOne({ email: email });
-    console.log("user: ", user);
 
     const isCorrect =
       user == null ? false : await bcrypt.compare(password, user.password);

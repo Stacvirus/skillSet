@@ -21,6 +21,10 @@ const missionRouter = require("./controller/missions");
 const ratingRouter = require("./controller/ratings");
 const projectgRouter = require("./controller/projects");
 const taskRouter = require("./controller/tasks");
+const notifRouter = require("./controller/notifications");
+const invitationRouter = require("./controller/invitations");
+const supportRouter = require("./controller/support");
+const fileRouter = require("./controller/files");
 
 mongoose
   .connect(MONGODB_URI)
@@ -47,6 +51,10 @@ app.use(`${BASE_URI}/competences`, competenceRouter); // e.g java, javaScript, f
 app.use(`${BASE_URI}/ratings`, ratingRouter);
 app.use(`${BASE_URI}/projects`, projectgRouter);
 app.use(`${BASE_URI}/tasks`, taskRouter);
+app.use(`${BASE_URI}/notifications`, notifRouter);
+app.use(`${BASE_URI}/invitations`, invitationRouter);
+app.use(`${BASE_URI}/contact-suppport`, supportRouter);
+app.use(`${BASE_URI}/files`, fileRouter);
 
 app.use(unknownEndpoint);
 app.use(errorHandler);

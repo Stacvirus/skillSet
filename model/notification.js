@@ -2,11 +2,11 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const schema = new Schema({
-  content: { type: String, required: true },
+  title: { type: String, required: true },
   description: { type: String, required: true },
   targetId: { type: String, required: true }, // represents the target of the notification it can be mission project invitation ...
   emitTo: { type: Schema.Types.ObjectId, ref: "User" },
-  isRead: Boolean,
+  isRead: { type: Boolean, default: false },
   createdAt: { type: Date, immutable: true },
 });
 

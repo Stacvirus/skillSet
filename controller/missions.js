@@ -128,11 +128,11 @@ router.post(
   async (req, res, next) => {
     const { freelance_id, mission_id } = req.params;
     // verify the existence of the chosen freelance
-    const freelance = await Freelance.findById(freelance_id);
-    if (!freelance)
-      return res
-        .status(404)
-        .json({ status: false, data: "freelancer not found, retry again ..." });
+    // const freelance = await Freelance.findById(freelance_id);
+    // if (!freelance)
+    //   return res
+    //     .status(404)
+    //     .json({ status: false, data: "freelancer not found, retry again ..." });
 
     try {
       //updating the mission table
@@ -143,18 +143,11 @@ router.post(
       const mission = await Mission.findByIdAndUpdate(mission_id, options, {
         new: true,
       });
-      //create the corresponding project
-      const project = new Project({
-        rating: 0,
-        status: "PENDING",
-        mission: mission_id,
-        createdAt: new Date(),
-      });
+
       res.send({
         status: true,
-        data: { project, mission },
+        data: mission,
       });
-      await project.save();
     } catch (error) {
       next(error);
     }

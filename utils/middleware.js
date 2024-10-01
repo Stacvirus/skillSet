@@ -24,7 +24,7 @@ function errorHandler(err, req, res, next) {
   } else if (err.name === "ValidationError") {
     return res.status(400).json({
       status: false,
-      data: "item not found in table, verify id: " + err.message,
+      data: err.message,
     });
   } else if (
     err.name === "MongoServerError" &&

@@ -5,21 +5,21 @@ post http://localhost:3000/api/v1/skill-sync/auth/sign-up
 Content-Type: application/json
 
 {
-    "firstName": "satcha",
-    "lastName": "takam",
-    "phone": "+237654789040",
+    "firstName": "criqsus",
+    "lastName": "cirus",
+    "phone": "+237654789045",
     "password": "password",
     "role": "FREELANCE",
-    "email": "satcha@gmail.com"
+    "email": "cirus@gmail.com"
 }
 ###
 # create a freelance
-post http://localhost:3000/api/v1/skill-sync/freelances/66f41191cb1b3564cc694c40
+post http://localhost:3000/api/v1/skill-sync/freelances/66fbaa209b415424d0602184
 Content-Type: application/json
 
 {
     "tarif": {
-        "value": 1500
+        "value": 1000
     },
     "city": "Douala"
 }
@@ -35,10 +35,19 @@ post http://localhost:3000/api/v1/skill-sync/auth/login
 Content-Type: application/json
 
 {
-    "email": "satcha@gmail.com",
+    "email": "cirus@gmail.com",
     "password": "password"
 }
 
+###
+# login for virus
+post http://localhost:3000/api/v1/skill-sync/auth/login
+Content-Type: application/json
+
+{
+    "email": "virus@gmail.com",
+    "password": "password"
+}
 ###
 # create mission
 post http://localhost:3000/api/v1/skill-sync/missions
@@ -161,3 +170,61 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ZjQxMTkxY
 {
     "competence": "66f933dfe066d7e5b8f65e78"
 }
+
+###
+# add a freelance as collaborator
+post http://localhost:3000/api/v1/skill-sync/projects/set/collab/66f7d533830dab7f2dd0c0b8
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ZjQxMTkxY2IxYjM1NjRjYzY5NGM0MCIsImVtYWlsIjoic2F0Y2hhQGdtYWlsLmNvbSIsInJvbGUiOiJGUkVFTEFOQ0UiLCJpYXQiOjE3Mjc2MDQyMDIsImV4cCI6MTcyNzYyNTgwMn0.VGi3euOD5XGTz1BPatLQ_x0jnqQ7d9pBd_DxQ8qGdWw
+
+###
+# get collaborator for a particular project
+get http://localhost:3000/api/v1/skill-sync/projects/get/collab
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ZjQxMTkxY2IxYjM1NjRjYzY5NGM0MCIsImVtYWlsIjoic2F0Y2hhQGdtYWlsLmNvbSIsInJvbGUiOiJGUkVFTEFOQ0UiLCJpYXQiOjE3Mjc2MDQyMDIsImV4cCI6MTcyNzYyNTgwMn0.VGi3euOD5XGTz1BPatLQ_x0jnqQ7d9pBd_DxQ8qGdWw
+
+###
+# get freelances collaborating in a project
+get http://localhost:3000/api/v1/skill-sync/freelances//get/collab-pro/66f7d533830dab7f2dd0c0b8
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ZjQxMTkxY2IxYjM1NjRjYzY5NGM0MCIsImVtYWlsIjoic2F0Y2hhQGdtYWlsLmNvbSIsInJvbGUiOiJGUkVFTEFOQ0UiLCJpYXQiOjE3Mjc2MDQyMDIsImV4cCI6MTcyNzYyNTgwMn0.VGi3euOD5XGTz1BPatLQ_x0jnqQ7d9pBd_DxQ8qGdWw
+
+
+
+###
+# get freelances collaborating in a project
+get http://localhost:3000/api/v1/skill-sync/invitations
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ZjQxMTkxY2IxYjM1NjRjYzY5NGM0MCIsImVtYWlsIjoic2F0Y2hhQGdtYWlsLmNvbSIsInJvbGUiOiJGUkVFTEFOQ0UiLCJpYXQiOjE3Mjc2OTEyODgsImV4cCI6MTcyNzcxMjg4OH0.vWQk0Bz_27TTbCVHGRhvJHmFpIAb29T-UOU2fNS3ueg
+
+{
+    "message": "hey will you want to collaborate with me?"
+}
+
+###
+# send an invitations
+post http://localhost:3000/api/v1/skill-sync/invitations/66f7d533830dab7f2dd0c0b8/66fbaa209b415424d0602184
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ZjQxMTkxY2IxYjM1NjRjYzY5NGM0MCIsImVtYWlsIjoic2F0Y2hhQGdtYWlsLmNvbSIsInJvbGUiOiJGUkVFTEFOQ0UiLCJpYXQiOjE3Mjc3NjgyMTEsImV4cCI6MTcyNzc4OTgxMX0.7rOf-cWu8kT6SjVTVMTCQKMdZ261IspZTTL8jo3MvSA
+
+{
+    "message": "hey will you want to collaborate with me?"
+}
+###
+# get invitations of a freelance
+get http://localhost:3000/api/v1/skill-sync/invitations/get/freelance
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ZmJhYTIwOWI0MTU0MjRkMDYwMjE4NCIsImVtYWlsIjoiY2lydXNAZ21haWwuY29tIiwicm9sZSI6IkZSRUVMQU5DRSIsImlhdCI6MTcyNzc2OTM0MiwiZXhwIjoxNzI3NzkwOTQyfQ.va8GtHgtxiEV6DGMh-0b9NpjyRnNUmapoiyXt80g4JU
+
+{
+    "message": "hey will you want to collaborate with me?"
+}
+
+###
+# response to an invitation
+put http://localhost:3000/api/v1/skill-sync/invitations/respond-to/66fbaae1b215349db9f0d2bc?resp=accept
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ZmJhYTIwOWI0MTU0MjRkMDYwMjE4NCIsImVtYWlsIjoiY2lydXNAZ21haWwuY29tIiwicm9sZSI6IkZSRUVMQU5DRSIsImlhdCI6MTcyNzc2OTM0MiwiZXhwIjoxNzI3NzkwOTQyfQ.va8GtHgtxiEV6DGMh-0b9NpjyRnNUmapoiyXt80g4JU
+
+###
+# get invitations for a particular project
+get http://localhost:3000/api/v1/skill-sync/invitations/get/project/66f7d533830dab7f2dd0c0b8
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ZmJhYTIwOWI0MTU0MjRkMDYwMjE4NCIsImVtYWlsIjoiY2lydXNAZ21haWwuY29tIiwicm9sZSI6IkZSRUVMQU5DRSIsImlhdCI6MTcyNzc2OTM0MiwiZXhwIjoxNzI3NzkwOTQyfQ.va8GtHgtxiEV6DGMh-0b9NpjyRnNUmapoiyXt80g4JU
+
+

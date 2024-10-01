@@ -4,6 +4,25 @@ const Freelance = require("../model/freelance");
 // const Project = require("../model/project");
 const { userExtractor } = require("../utils/middleware");
 
+router.post("/:mission_id", userExtractor, async (req, res, next) => {
+  const { mission_id } = req.params;
+  try {
+    const project = new Project({
+      rating: 0,
+      status: "PENDING",
+      mission: mission_id,
+      createdAt: new Date(),
+    });
+    await project.save();
+    res.send({
+      status: true,
+      data: project,
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
 // get all project
 router.get("/", userExtractor, async (req, res, next) => {
   let { page = 1, limit = 10 } = req.query;
@@ -145,6 +164,30 @@ router.get("/get/collab", userExtractor, async (req, res, next) => {
   } catch (error) {
     next(error);
   }
+});
+
+// todo: rate a project
+router.put(":id", userExtractor, async (req, res, next) => {
+  const { id } = req.params;
+  let { rate } = req.query;
+
+  if (rate)
+    return res.status(408).json({
+      status: false,
+      data: "please enter a number to rate the project",
+    });
+  rate = parseInt(rate);
+  try {
+    const project = await Project.findByIdAndUpdate(
+      id,
+      { rating: rate },
+      { new: true }
+    );
+    res.send({
+      status: true,
+      data: project,
+    });
+  } catch (error) {}
 });
 
 module.exports = router;
