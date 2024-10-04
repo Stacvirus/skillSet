@@ -1,16 +1,18 @@
 const router = require("express").Router();
 const Project = require("../model/project");
 const Freelance = require("../model/freelance");
-// const Project = require("../model/project");
+const Mission = require("../model/mission");
 const { userExtractor } = require("../utils/middleware");
 
 router.post("/:mission_id", userExtractor, async (req, res, next) => {
   const { mission_id } = req.params;
   try {
+    const mission = await Mission.findById(mission_id);
     const project = new Project({
       rating: 0,
       status: "PENDING",
       mission: mission_id,
+      leader: mission.engage,
       createdAt: new Date(),
     });
     await project.save();
@@ -67,11 +69,19 @@ router.get("/:id", userExtractor, async (req, res, next) => {
 router.get("/get/freelance", userExtractor, async (req, res, next) => {
   try {
     const freelance = await Freelance.findOne({ userId: req.user.id });
-    const projects = await Project.find().populate("mission");
-    const ans = projects.filter((p) => p.mission.engage == freelance.id);
+    if (!freelance)
+      return res.status(404).json({
+        status: false,
+        data: "freelance account not found!",
+      });
+
+    const projects = await Project.find({ leader: freelance.id }).populate(
+      "mission"
+    );
+    // const ans = projects.filter((p) => p.mission.engage == freelance.id);
     res.send({
       status: true,
-      data: ans,
+      data: projects,
     });
   } catch (error) {
     next(error);
@@ -167,11 +177,11 @@ router.get("/get/collab", userExtractor, async (req, res, next) => {
 });
 
 // todo: rate a project
-router.put("/:id", userExtractor, async (req, res, next) => {
+router.put("/rating/:id", userExtractor, async (req, res, next) => {
   const { id } = req.params;
   let { rate } = req.query;
 
-  if (rate)
+  if (!rate)
     return res.status(408).json({
       status: false,
       data: "please enter a number to rate the project",
@@ -188,6 +198,29 @@ router.put("/:id", userExtractor, async (req, res, next) => {
       data: project,
     });
   } catch (error) {}
+});
+
+router.put("/mark/:id", userExtractor, async (req, res, next) => {
+  const { id } = req.params;
+  const { status } = req.body;
+  if (!status)
+    return res.status(401).json({
+      status: false,
+      data: "please a status an retry",
+    });
+  try {
+    const updatedProject = await Project.findByIdAndUpdate(
+      id,
+      { status },
+      { new: true }
+    );
+    res.send({
+      status: true,
+      data: updatedProject,
+    });
+  } catch (error) {
+    next(error);
+  }
 });
 
 module.exports = router;

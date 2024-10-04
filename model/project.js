@@ -3,9 +3,14 @@ const Schema = mongoose.Schema;
 
 const schema = new Schema({
   rating: { type: Number },
-  status: { type: String, enum: ["PENDING", "COMPLETE", "CANCELED"] },
+  status: {
+    type: String,
+    enum: ["PENDING", "COMPLETE", "CANCELED"],
+    default: "PENDING",
+  },
   mission: { type: Schema.Types.ObjectId, ref: "Mission", required: true },
   collaborators: [{ type: Schema.Types.ObjectId, ref: "Freelance" }],
+  leader: { type: Schema.Types.ObjectId, ref: "Freelance" },
   createdAt: { type: Date, immutable: true },
 });
 

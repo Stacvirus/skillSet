@@ -36,7 +36,7 @@ router.post("/", userExtractor, async (req, res, next) => {
 });
 
 // get all missions
-router.get("/gat-all", async (req, res, next) => {
+router.get("/get-all", async (req, res, next) => {
   let { page, limit } = req.query;
   (page = parseInt(page)), (limit = parseInt(limit));
   try {
@@ -179,7 +179,6 @@ router.post("/set-cat/:mission_id", userExtractor, async (req, res, next) => {
   console.log("categories", req.body.categories);
 
   const cat = await Category.findById({ $in: categories });
-  console.log("categories found: ", cat);
 
   if (cat.length < categories.length) {
     error("and id in the categories array is not found");
@@ -284,8 +283,8 @@ router.post("/postulate/:mission_id", userExtractor, async (req, res, next) => {
 router.put("/:id", userExtractor, async (req, res, next) => {
   const { id } = req.params;
   const { title, description, budget } = req.body;
-  if (!title || !description || budget)
-    return res.status(409).json({
+  if (!title && !description && !budget)
+    return res.status(408).json({
       status: false,
       data: "all inputs are missing, please enter atleast one ...",
     });

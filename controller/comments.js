@@ -3,8 +3,7 @@ const Comment = require("../model/comment");
 const { userExtractor } = require("../utils/middleware");
 
 router.get("/", async (req, res, next) => {
-  console.log("in comment router");
-  res.send("hello world!");
+  res.send(await Comment.find());
 });
 
 router.post("/:target_id", userExtractor, async (req, res, next) => {
@@ -79,7 +78,15 @@ router.put("/:id", userExtractor, async (req, res, next) => {
   content && (options.content = content);
   tag && (options.tag = tag);
   try {
+    const cmt = await Comment.findById(id);
+    if (!cmt)
+      return res.status(404).json({
+        status: false,
+        data: "comment not found",
+      });
     const comment = await Comment.findByIdAndUpdate(id, options, { new: true });
+    console.log("updated comments: ", comment, "options: ", options);
+
     res.send({
       status: true,
       data: comment,

@@ -42,7 +42,7 @@ router.post("/sign-up", upload.single("profile"), async (req, res, next) => {
   let profileImage;
   req.file != null
     ? (profileImage = req.file.filename)
-    : (profileImage = "default_profile_image");
+    : (profileImage = "default_profile_image.png");
 
   try {
     const user = new User({

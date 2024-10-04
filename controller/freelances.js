@@ -47,7 +47,7 @@ router.get("/:id", userExtractor, async (req, res, next) => {
 // get freelance according to a userId
 router.get("/get/user/:user_id", userExtractor, async (req, res, next) => {
   try {
-    const freelance = Freelance.findOne({
+    const freelance = await Freelance.findOne({
       userId: req.params.user_id || req.user.id,
     })
       .populate("categories")
@@ -197,7 +197,7 @@ router.delete("/del/cat/:cat_id", userExtractor, async (req, res, next) => {
 
 // delete a competence from freelance
 router.delete("/del/com/:com_id", userExtractor, async (req, res, next) => {
-  const { com_id } = req.body;
+  const { com_id } = req.params;
   try {
     // check if category exists for this freelance
     const freelance = await Freelance.findOne({ userId: req.user.id });
@@ -206,7 +206,7 @@ router.delete("/del/com/:com_id", userExtractor, async (req, res, next) => {
     if (!ans)
       return res.status(404).json({
         status: false,
-        data: "competence doesn't exists for this mission, please select another one or remove it",
+        data: "competence doesn't exists for this user, please select another one or remove it",
       });
 
     freelance.competences = freelance.competences.filter(
