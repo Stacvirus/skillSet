@@ -24,8 +24,6 @@ const upload = multer({
 });
 
 router.post("/sign-up", upload.single("profile"), async (req, res, next) => {
-  console.log(req.body);
-
   const { body } = req;
   const { firstName, lastName, email, password, phone, role } = body;
   // input verification
@@ -122,7 +120,7 @@ router.put("/users/details/:user_id", async (req, res, next) => {
 // delete a user but its table still exist in the db
 router.delete("/users/:user_id", userExtractor, async (req, res, next) => {
   const { user_id } = req.params;
-  if (req.user.id.toString() != user_id || req.user.role != "ADMIN") {
+  if (req.user.id.toString() != user_id && req.user.role != "ADMIN") {
     return res.status(403).json({ status: false, data: "unAuthorize action" });
   }
 
@@ -136,19 +134,24 @@ router.delete("/users/:user_id", userExtractor, async (req, res, next) => {
 
 // update profile image
 router.put(
-  "/users/set-profile/",
+  "/users/set-profile/:user_id",
   upload.single("profile"),
   userExtractor,
   async (req, res, next) => {
+    const { user_id } = req.params;
     if (!req.file) {
       return res
         .status(401)
         .json({ status: false, data: "profile image not passed" });
     }
+    if (req.user.id != user_id && req.user.role != "ADMIN")
+      return res
+        .status(403)
+        .json({ status: false, data: "unAuthorized action" });
     const profileImage = `${HOST}:${PORT}/images/profiles/${req.file.filename}`;
     try {
       const user = await User.findByIdAndUpdate(
-        req.user.id,
+        user_id,
         {
           profileImage,
         },

@@ -21,7 +21,7 @@ const upload = multer({
 });
 
 router.post(
-  "/",
+  "/upload",
   upload.single("file"),
   userExtractor,
   async (req, res, next) => {

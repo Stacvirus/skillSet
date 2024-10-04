@@ -45,9 +45,11 @@ router.get("/:id", userExtractor, async (req, res, next) => {
 });
 
 // get freelance according to a userId
-router.get("/get/user", userExtractor, async (req, res, next) => {
+router.get("/get/user/:user_id", userExtractor, async (req, res, next) => {
   try {
-    const freelance = Freelance.findOne({ userId: req.user.id })
+    const freelance = Freelance.findOne({
+      userId: req.params.user_id || req.user.id,
+    })
       .populate("categories")
       .populate("competences")
       .populate("userId");
@@ -167,16 +169,12 @@ router.post("/set/com", userExtractor, async (req, res, next) => {
 });
 
 // delete a category from freelance
-router.delete("/del/cat", userExtractor, async (req, res, next) => {
-  const { category } = req.body;
+router.delete("/del/cat/:cat_id", userExtractor, async (req, res, next) => {
+  const { cat_id } = req.params;
   try {
     // check if category exists for this freelance
     const freelance = await Freelance.findOne({ userId: req.user.id });
-    let ans = false;
-    freelance.categories.forEach((c) => {
-      if (c.toString() == category) return (ans = true);
-    });
-    console.log("answer: ", ans);
+    const ans = freelance.categories.includes(cat_id);
 
     if (!ans)
       return res.status(404).json({
@@ -185,7 +183,7 @@ router.delete("/del/cat", userExtractor, async (req, res, next) => {
       });
 
     freelance.categories = freelance.categories.filter(
-      (m) => m.toString() != category
+      (m) => m.toString() != cat_id
     );
     await freelance.save();
     res.send({
@@ -198,16 +196,12 @@ router.delete("/del/cat", userExtractor, async (req, res, next) => {
 });
 
 // delete a competence from freelance
-router.delete("/del/com", userExtractor, async (req, res, next) => {
-  const { competence } = req.body;
+router.delete("/del/com/:com_id", userExtractor, async (req, res, next) => {
+  const { com_id } = req.body;
   try {
     // check if category exists for this freelance
     const freelance = await Freelance.findOne({ userId: req.user.id });
-    let ans = false;
-    freelance.competences.forEach((c) => {
-      if (c.toString() == competence) return (ans = true);
-    });
-    console.log("answer: ", ans);
+    const ans = freelance.competences.includes(com_id);
 
     if (!ans)
       return res.status(404).json({
@@ -216,7 +210,7 @@ router.delete("/del/com", userExtractor, async (req, res, next) => {
       });
 
     freelance.competences = freelance.competences.filter(
-      (m) => m.toString() != competence
+      (m) => m.toString() != com_id
     );
     await freelance.save();
     res.send({
@@ -237,9 +231,10 @@ router.get(
     try {
       const project = await Project.findById(project_id);
       const ids = project.collaborators.map((c) => c);
-      const freelance = await Freelance.findById({ $in: ids }).populate(
-        "userId"
-      );
+      const freelance = await Freelance.findById({ $in: ids })
+        .populate("userId")
+        .populate("categories")
+        .populate("competences");
       res.send({
         status: true,
         data: freelance,

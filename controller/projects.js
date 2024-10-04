@@ -24,7 +24,7 @@ router.post("/:mission_id", userExtractor, async (req, res, next) => {
 });
 
 // get all project
-router.get("/", userExtractor, async (req, res, next) => {
+router.get("/get-all", userExtractor, async (req, res, next) => {
   let { page = 1, limit = 10 } = req.query;
   page = parseInt(page);
   limit = parseInt(limit);
@@ -125,21 +125,21 @@ router.get("/get/status", userExtractor, async (req, res, next) => {
 
 // todo: set a freelance as a collaborator
 router.post(
-  "/set/collab/:project_id",
+  "/set-collab/:project_id/:freelance_id",
   userExtractor,
   async (req, res, next) => {
-    const { project_id } = req.params;
+    const { project_id, freelance_id } = req.params;
     try {
       const project = await Project.findById(project_id);
-      const freelance = await Freelance.findOne({ userId: req.user.id });
+      //const freelance = await Freelance.findOne({ userId: req.user.id });
 
-      const ans = project.collaborators.includes(freelance.id);
+      const ans = project.collaborators.includes(freelance_id);
       if (ans)
         return res.status(401).json({
           status: false,
           data: "freelance already added as collaborator",
         });
-      project.collaborators = project.collaborators.concat(freelance.id);
+      project.collaborators = project.collaborators.concat(freelance_id);
       await project.save();
       res.send({
         status: true,
@@ -167,7 +167,7 @@ router.get("/get/collab", userExtractor, async (req, res, next) => {
 });
 
 // todo: rate a project
-router.put(":id", userExtractor, async (req, res, next) => {
+router.put("/:id", userExtractor, async (req, res, next) => {
   const { id } = req.params;
   let { rate } = req.query;
 

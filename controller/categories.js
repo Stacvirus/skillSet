@@ -2,7 +2,7 @@ const router = require("express").Router();
 const Category = require("../model/category");
 const { userExtractor } = require("../utils/middleware");
 
-router.post("/", async (req, res, next) => {
+router.post("/", userExtractor, async (req, res, next) => {
   const { name } = req.body;
   if (!name)
     return res
@@ -33,7 +33,7 @@ router.get("/", async (req, res, next) => {
 });
 
 // update a category
-router.put("/:id", async (req, res, next) => {
+router.put("/:id", userExtractor, async (req, res, next) => {
   const { id } = req.params;
   try {
     const cat = await Category.findByIdAndUpdate(id, req.body, { new: true });

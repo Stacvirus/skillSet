@@ -10,7 +10,7 @@ const schema = new Schema({
   },
   status: { type: String, enum: ["OPEN", "CLOSED"] },
   categories: [{ type: Schema.Types.ObjectId, ref: "Category" }],
-  candidates: [{ type: Schema.Types.ObjectId, ref: "Freelance" }],
+  candidates: [{ type: Schema.Types.ObjectId, ref: "User" }],
   emitBy: { type: Schema.Types.ObjectId, ref: "User" },
   engage: { type: Schema.Types.ObjectId, ref: "Freelance" },
   createdAt: { type: Date, immutable: true },

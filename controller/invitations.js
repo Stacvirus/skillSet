@@ -67,8 +67,8 @@ router.get(
 router.put("/:id", userExtractor, async (req, res, next) => {
   const { id } = req.params;
   const { message } = req.body;
-  const { emitTo, emitFor } = req.query;
-  if (!message && !emitTo && !emitFor)
+  const { emitTo } = req.query;
+  if (!message && !emitTo)
     return res.status(408).json({
       status: false,
       data: "please fill atleast one input",
@@ -77,7 +77,6 @@ router.put("/:id", userExtractor, async (req, res, next) => {
     const options = {};
     message && (options.message = message);
     emitTo && (options.emitTo = emitTo);
-    emitFor && (options.emitFor = emitFor);
     const invitation = await Invitation.findByIdAndUpdate(id, options, {
       new: true,
     });
@@ -94,6 +93,11 @@ router.put("/:id", userExtractor, async (req, res, next) => {
 router.put("/respond-to/:id", userExtractor, async (req, res, next) => {
   const { resp } = req.query;
   const { id } = req.params;
+  if (!resp)
+    return res.status(401).json({
+      status: false,
+      data: "no response value send",
+    });
   try {
     const invitation = await Invitation.findByIdAndUpdate(
       id,

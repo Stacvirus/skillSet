@@ -36,7 +36,7 @@ router.post("/", userExtractor, async (req, res, next) => {
 });
 
 // get all missions
-router.get("/", async (req, res, next) => {
+router.get("/gat-all", async (req, res, next) => {
   let { page, limit } = req.query;
   (page = parseInt(page)), (limit = parseInt(limit));
   try {
@@ -78,11 +78,13 @@ router.get("/:id", userExtractor, async (req, res, next) => {
 });
 
 // get missions emited by a particular user
-router.get("/get/user", userExtractor, async (req, res, next) => {
+router.get("/get/user/:user_id", userExtractor, async (req, res, next) => {
   console.log("user id: ", req.user.id);
 
   try {
-    const missions = await Mission.find({ emitBy: req.user.id })
+    const missions = await Mission.find({
+      emitBy: req.user.id || req.params.user_id,
+    })
       .populate("candidates")
       .populate("categories");
     res.send({
@@ -99,12 +101,12 @@ router.get("/get/freelance", userExtractor, async (req, res, next) => {
   //const { freelance_id } = req.params;
 
   try {
-    const freelance = await Freelance.findOne({ userId: req.user.id });
+    //const freelance = await Freelance.findOne({ userId: req.user.id });
     const missions = await Mission.find({})
       .populate("emitBy")
       .populate("categories");
 
-    const postule = missions.filter((m) => m.candidates.includes(freelance.id));
+    const postule = missions.filter((m) => m.candidates.includes(req.user.id));
 
     // missions.forEach((m) => {
     //   m.candidates.forEach((c) => {
@@ -183,17 +185,22 @@ router.post("/set-cat/:mission_id", userExtractor, async (req, res, next) => {
     error("and id in the categories array is not found");
     return res.status(404).json({
       status: false,
-      data: "category not found, please choose and try again ...",
+      data: "please make sure all inputed categories actually exists ...",
     });
   }
   try {
     const mission = await Mission.findById(mission_id);
 
+    if (mission.emitBy.toString() != req.user.id.toString())
+      return res.status(403).json({
+        status: false,
+        data: "unAuthorized action",
+      });
+
     let ans;
     categories.forEach((c) => {
-      mission.categories.forEach((m) => {
-        if (m == c) return (ans = true);
-      });
+      ans = mission.categories.includes(c);
+      if (ans) return;
     });
     if (ans) {
       return res.status(404).json({
@@ -214,36 +221,34 @@ router.post("/set-cat/:mission_id", userExtractor, async (req, res, next) => {
 });
 
 // delete a category from mission
-router.delete("/del-cat/:mission_id", userExtractor, async (req, res, next) => {
-  const { mission_id } = req.params;
-  const { category } = req.body;
-  try {
-    // check if category exists in this mission
-    const mission = await Mission.findById(mission_id);
-    let ans = false;
-    mission.categories.forEach((c) => {
-      if (c.toString() == category) return (ans = true);
-    });
-    console.log("answer: ", ans);
+router.delete(
+  "/del-cat/:mission_id/:cat_id",
+  userExtractor,
+  async (req, res, next) => {
+    const { mission_id, cat_id } = req.params;
+    try {
+      // check if category exists in this mission
+      const mission = await Mission.findById(mission_id);
+      const ans = mission.categories.includes(cat_id);
+      console.log("answer: ", ans);
 
-    if (!ans)
-      return res.status(404).json({
-        status: false,
-        data: "category doesn't exists for this mission, please select another one or remove it",
+      if (!ans)
+        return res.status(404).json({
+          status: false,
+          data: "category doesn't exists for this mission, please select another one or remove it",
+        });
+
+      mission.categories = mission.categories.filter((c) => c != cat_id);
+      await mission.save();
+      res.send({
+        status: true,
+        data: mission,
       });
-
-    mission.categories = mission.categories.filter(
-      (m) => m.toString() != category
-    );
-    await mission.save();
-    res.send({
-      status: true,
-      data: mission,
-    });
-  } catch (error) {
-    next(error);
+    } catch (error) {
+      next(error);
+    }
   }
-});
+);
 
 // enable a freelance to postulate to a mission
 router.post("/postulate/:mission_id", userExtractor, async (req, res, next) => {
@@ -257,14 +262,14 @@ router.post("/postulate/:mission_id", userExtractor, async (req, res, next) => {
     });
 
   // check the existence of the freelance
-  const freelance = await Freelance.findOne({ userId: req.user.id });
-  if (!freelance)
-    return res.status(404).send({
-      status: false,
-      data: "freelance not found, please choose another user",
-    });
+  // const freelance = await Freelance.findOne({ userId: req.user.id });
+  // if (!freelance)
+  //   return res.status(404).send({
+  //     status: false,
+  //     data: "freelance not found, please choose another user",
+  //   });
   try {
-    mission.candidates = mission.candidates.concat(freelance.id);
+    mission.candidates = mission.candidates.concat(req.user.id);
     await mission.save();
     res.send({
       status: true,

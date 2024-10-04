@@ -34,7 +34,7 @@ router.post("/:target_id", userExtractor, async (req, res, next) => {
 });
 
 // get comments for a particular target: project, training
-router.get("/target/:target_id", userExtractor, async (req, res, next) => {
+router.get("/target/:target_id", async (req, res, next) => {
   const { target_id } = req.params;
   try {
     const comments = await Comment.find({ emitFor: target_id }).populate(
@@ -53,7 +53,9 @@ router.get("/target/:target_id", userExtractor, async (req, res, next) => {
 router.get("/user/:user_id", userExtractor, async (req, res, next) => {
   const { user_id } = req.params;
   try {
-    const comments = await Comment.find({ emitBy: user_id }).populate("emitBy");
+    const comments = await Comment.find({
+      emitBy: user_id || req.user.id,
+    }).populate("emitBy");
     res.send({
       status: true,
       data: comments,
@@ -67,6 +69,7 @@ router.get("/user/:user_id", userExtractor, async (req, res, next) => {
 router.put("/:id", userExtractor, async (req, res, next) => {
   const { id } = req.params;
   const { content, tag } = req.body;
+
   if (!content && !tag)
     return res.status(409).json({
       status: false,

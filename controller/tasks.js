@@ -51,6 +51,48 @@ router.get(
   }
 );
 
+// mark as done
+router.put("/mark/:id", userExtractor, async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    const task = await Task.findByIdAndUpdate(
+      id,
+      { isDone: true },
+      { new: true }
+    );
+    res.send({
+      status: true,
+      data: task,
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
+// update details of a task
+router.put("/:id", userExtractor, async (req, res, next) => {
+  const { id } = req.params;
+  const { title, description } = req.body;
+  if (!title && !description)
+    return res.send({
+      status: true,
+      data: "please fill atleast one input",
+    });
+
+  try {
+    const options = {};
+    title && (options.title = title);
+    description && (options.description = description);
+    const task = await Task.findByIdAndUpdate(id, options, { new: true });
+    res.send({
+      status: true,
+      data: task,
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
 // delete a task
 router.delete("/:id", userExtractor, async (req, res, next) => {
   const { id } = req.params;
