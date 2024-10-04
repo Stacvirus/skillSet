@@ -98,7 +98,7 @@ router.put("/users/details/:user_id", async (req, res, next) => {
   const { user_id } = req.params;
   const options = {};
   const { firstName, lastName } = req.body;
-  if (!firstName || !lastName)
+  if (!firstName && !lastName)
     return res.status(401).json({
       status: false,
       data: "all inputs are missing, please fill atleast one of them",
