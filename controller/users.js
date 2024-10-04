@@ -39,6 +39,8 @@ router.post("/sign-up", upload.single("profile"), async (req, res, next) => {
   }
 
   // profile image handling
+  const link = process.env.NODE_ENV.trim() == "DEV" ? `${HOST}:${PORT}` : HOST;
+
   let profileImage;
   req.file != null
     ? (profileImage = req.file.filename)
@@ -49,7 +51,7 @@ router.post("/sign-up", upload.single("profile"), async (req, res, next) => {
       ...body,
       password: await bcrypt.hash(password, 10),
       createdAt: new Date(),
-      profileImage: `${HOST}:${PORT}/images/profiles/${profileImage}`,
+      profileImage: `${link}/images/profiles/${profileImage}`,
     });
     await user.save();
     const token = tokenBuilder(user.id, email, role);
