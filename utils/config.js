@@ -1,16 +1,22 @@
 require("dotenv").config();
-console.log(process.env.NODE_ENV);
+const env_var = process.env.NODE_ENV;
+console.log(env_var.trim() == "PROD", env_var);
 
 const PORT = process.env.PORT;
-const MONGODB_URI =
-  process.env.NODE_ENV == "DEV"
-    ? process.env.MONGODB_URI
-    : process.env.MONGODB_URI_DEV;
+let MONGODB_URI;
+if (env_var.trim() == "PROD") {
+  MONGODB_URI = process.env.MONGODB_URI;
+} else {
+  MONGODB_URI = process.env.MONGODB_URI_DEV;
+}
+
 const BASE_URI = process.env.BASE_URI;
 const SECRET = process.env.SECRET;
 const HOST = process.env.HOST;
 const EMAIL = process.env.EMAIL;
 const PASSWORD = process.env.PASSWORD;
+
+console.log("mongodb uri: ", MONGODB_URI);
 
 module.exports = {
   PORT,
